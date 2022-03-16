@@ -153,7 +153,6 @@ while True:
 	else:
 		falling = False
 
-
 	# Transform the screen so game content is always the same size, then update.
 	screen.blit(pygame.transform.scale(display, (height, height)), (0, 0))
 
