@@ -16,7 +16,7 @@
  - **Cameron** | [**_GitHub_**](https://github.com/n0remac) [Discord](https://discordapp.com/users/239260347981103105)  
  
  #### Designers 
- - **sybuns** | `No GitHub` 
+ - **sybuns** | [**_GitHub_**](https://github.com/leelocin) 
  - **stabbie** | `No GitHub` 
  - **Reiner** | `No GitHub` 
  
