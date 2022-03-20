@@ -1,4 +1,4 @@
-from tools import HiddenPrints
+from tools import HiddenPrints, instance_getter
 with HiddenPrints():
 	import pygame
 	from pygame.locals import *
@@ -8,24 +8,39 @@ import pytmx
 import entity
 import math
 del HiddenPrints
+import configparser
 
-# Setup pygame stuff
+# Get game configs.
+config = configparser.ConfigParser()
+config.read('config.ini')
+config.sections()
+
+# Setup pygame.
 print('Successfully initialized %s pygame modules, %s failed.' % (pygame.init()))
-fps = 60
+fps = int(config['WINDOW']['FPS'])
 clock = pygame.time.Clock()
-width, height = 900, 900
-pygame.display.set_caption('game')
+
+# Create windows and surfaces
+print('Creating game displays.')
+width, height = int(config['WINDOW']['DEFAULTX']), int(config['WINDOW']['DEFAULTY'])
+pygame.display.set_caption(config['WINDOW']['TITLE'])
 screen = pygame.display.set_mode((width, height),  pygame.RESIZABLE)
-display = pygame.Surface((height / 3, height / 3))
+smaller = height if height < width else width
+display = pygame.Surface((smaller / 3, smaller / 3))
 debug_font = pygame.font.SysFont('Arial', 30)
 
 offset = (150, 150)
-falling = False
 
 # Load map
 filename = 'example.tmx'
 tmxdata = load_pygame(filename)
-print(f'Loaded map: {tmxdata.filename}\n - Tile size: {tmxdata.tilewidth}x{tmxdata.tileheight}\n - Map size: {tmxdata.width}x{tmxdata.height} \n - Map version: {tmxdata.version}\n - Tiled version: {tmxdata.tiledversion}')
+tile_layers = instance_getter(tmxdata.layers, pytmx.TiledTileLayer)
+if config['LOGGING']['PRINTLEVELINFO'].lower() == 'true':
+	print(f'''Loaded map: {tmxdata.filename}
+	- Tile size: {tmxdata.tilewidth}x{tmxdata.tileheight}
+	- Map size: {tmxdata.width}x{tmxdata.height}x{len(tile_layers)}
+	- Map version: {tmxdata.version}
+	- Tiled version: {tmxdata.tiledversion}\n''')
 
 # Load entities
 entity_count = 0
@@ -41,38 +56,38 @@ del entity_count
 # Game loop.
 print('Starting game loop.')
 while True:
+	# Content rendering.
 	display.fill((0, 0, 0))
 
-	max = (0, 0)
 	colliders = []
-	layer_tot = 0
 
-	for task in entity_manager.get_outside_tiles(0, 0, max[0], max[1], 0, layer_tot):
+	# Draws out-of-bounds entities behind in-bounds geometry.
+	for task in entity_manager.get_outside_back_entities():
 		display.blit(task.image, isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]))
 
-	for z, layer in enumerate(tmxdata.layers):
-		if isinstance(layer, pytmx.TiledTileLayer):
-			layer_tot += 1
-			colliders.append([])
-			for y, row in enumerate(layer.data):
-				for x, tile in enumerate(row):
-					max = (x, y)
-				
-					tile = tmxdata.get_tile_image(x, y, z)
+	for z, layer in enumerate(tile_layers):
+		colliders.append([])
+		for y, row in enumerate(layer.data):
+			for x, tile in enumerate(row):
+				tile = tmxdata.get_tile_image(x, y, z)
 
-					# Draws all entities that rendering order matters to.
-					tasks = entity_manager.get_tasks(x, y, z)
-					if len(tasks) > 0:
-						for task in tasks:
-							display.blit(task.image, isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]))
+				# Draw in-bounds entities
+				tasks = entity_manager.get_tasks(x, y, z)
+				if len(tasks) > 0:
+					for task in tasks:
+						display.blit(task.image, isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]))
 
-					if tile != None:
-						display.blit(tile, isometric.isometric(x, y, z, offset[0], offset[1]), (0, 0, 20, 24))
+				if tile != None:
+					display.blit(tile, isometric.isometric(x, y, z, offset[0], offset[1]), (0, 0, 20, 24))
 
-						collider = tmxdata.get_tile_properties(x, y, z)["colliders"][0]
-						if collider.type is not None:
-							colliders[z].append((x, y))
-							colliders[z].append(collider.type)
+					collider = tmxdata.get_tile_properties(x, y, z)["colliders"][0]
+					if collider.type is not None:
+						colliders[z].append((x, y))
+						colliders[z].append(collider.type)
+
+	# Draws out-of-bounds entities in front of in-bounds geometry.
+	for task in entity_manager.get_outside_front_entities(len(tile_layers[0].data[0]), len(tile_layers[0].data), len(tile_layers)):
+		display.blit(task.image, isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]))
 
 	for event in pygame.event.get():
 		if event.type == QUIT: # Quit routine.
@@ -80,10 +95,17 @@ while True:
 			quit()
 		elif event.type == pygame.WINDOWRESIZED: # If window is resized, resize the display surface.
 			width, height = pygame.display.get_surface().get_size()
-			display = pygame.Surface((height / 3, height / 3))
+			smaller = height if height < width else width
+			display = pygame.Surface((smaller / 3, smaller / 3))
 		
 	# Temporary movement system
 	keys = pygame.key.get_pressed()
+
+	@entity.keymapped(code = pygame.K_f)
+	def move_up():
+		print('Move up')
+
+	entity.run(keys)
 
 	player_index = 0
 	speed = 10
@@ -94,7 +116,7 @@ while True:
 		player_collision_layer = colliders[math.floor(player.z)]
 	except IndexError:
 		player_collision_layer = []
-	if True in list(keys) and not falling:
+	if not falling:
 		if keys[pygame.K_LEFT]:
 			target = (math.floor(player.x - speed * delta_time), math.floor(player.y))
 			if target not in player_collision_layer:

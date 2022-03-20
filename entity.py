@@ -15,10 +15,17 @@ class EntityManager:
                 break
         return tasks
 
-    def get_outside_tiles(self, x1, y1, x2, y2, z1, z2):
+    def get_outside_back_entities(self):
         outside_tiles = []
         for entity in self.entities:
-            if entity.x < x1 or entity.x > x2 or entity.y < y1 or entity.y > y2 or entity.z < z1 or entity.z > z2:
+            if entity.x < 0 or entity.y < 0 or entity.z < 0:
+                outside_tiles.append(entity)
+        return outside_tiles
+
+    def get_outside_front_entities(self, x, y, z):
+        outside_tiles = []
+        for entity in self.entities:
+            if entity.x > x or entity.y > y or entity.z > z:
                 outside_tiles.append(entity)
         return outside_tiles
 
