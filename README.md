@@ -6,17 +6,17 @@
 
  ## Our team
  #### Devs
- - **Jason** | @JasonLovesDoggo  
- - **Robert** | @robert-abraham
- - **Juan** | @regalk13         
- - **Camden** | @SoupySoups    
- - **jkohhokj** | @jkohhokj 
+ - **Jason** | [**_GitHub_**](https://github.com/JasonLovesDoggo)
+ - **Robert** | [**_GitHub_**](https://github.com/robert-abraham)
+ - **Juan** | [**_GitHub_**](https://github.com/regalk13)         
+ - **Camden** | [**_GitHub_**](https://github.com/SoupySoups)    
+ - **jkohhokj** | [**_GitHub_**](https://github.com/jkohhokj) 
  - **zdrc** | @TEMP
- - **Cameron** | @n0remac
+ - **Cameron** | [**_GitHub_**](https://github.com/n0remac)
  #### Designers 
  - **sybuns** | `No GitHub`
  - **stabbie** | `No GitHub`
  - **Reiner** | `No GitHub`
  #### Audio Engineers
  - **Wem** | `No GitHub`
- - **Flarieanie** | (**Discord** | _Flarieanie#7221_) 
+ - **Flarieanie** | `No GitHub` (**Discord** | _Flarieanie#7221_) 
