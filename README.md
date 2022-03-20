@@ -1,4 +1,4 @@
- # Our [Teams](https://www.pyweek.org/OURTEAMSURL) Submition to Pyweek 33
+ # Our [Teams](https://pyweek.org/e/tzs/) Submition to Pyweek 33
 
  ## About the game
 - insert details about the game here
