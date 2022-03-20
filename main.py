@@ -104,8 +104,9 @@ while True:
 				if target_type == 'solid':
 					pass
 				elif target_type == 'stairs_east':
-					player.x -= speed * delta_time
-					player.z = math.floor(player.z) + (1 - progress[0]) + 0.1
+					# player.x -= speed * delta_time
+					# player.z = math.floor(player.z) + (1 - progress[0]) + 0.1
+					pass
 		if keys[pygame.K_RIGHT]:
 			target = (math.floor(player.x + speed * delta_time), math.floor(player.y))
 			if target not in player_collision_layer:
@@ -115,8 +116,9 @@ while True:
 				if target_type == 'solid':
 					pass
 				elif target_type == 'stairs_west':
-					player.x += speed * delta_time
-					player.z = math.floor(player.z) + (1 - progress[0]) + 0.1
+					# player.x += speed * delta_time
+					# player.z = math.floor(player.z) + (1 - progress[0]) + 0.1
+					pass
 		if keys[pygame.K_UP]:
 			target = (math.floor(player.x), math.floor(player.y - speed * delta_time))
 			if target not in player_collision_layer:
@@ -126,8 +128,9 @@ while True:
 				if target_type == 'solid':
 					pass
 				elif target_type == 'stairs_north':
-					player.y -= speed * delta_time
-					player.z = math.floor(player.z) + (1 - progress[1]) + 0.1
+				# 	player.y -= speed * delta_time
+				# 	player.z = math.floor(player.z) + (1 - progress[1]) + 0.1
+					pass
 		if keys[pygame.K_DOWN]:
 			target = (math.floor(player.x), math.floor(player.y + speed * delta_time))
 			if target not in player_collision_layer:
@@ -137,8 +140,9 @@ while True:
 				if target_type == 'solid':
 					pass
 				elif target_type == 'stairs_south':
-					player.y += speed * delta_time
-					player.z = math.floor(player.z) + (1 - progress[1]) + 0.1
+				# 	player.y += speed * delta_time
+				# 	player.z = math.floor(player.z) + (1 - progress[1]) + 0.1
+					pass
 
 		entity_manager.entities[player_index] = player
 
