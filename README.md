@@ -11,7 +11,7 @@
  - **Juan** | [**_GitHub_**](https://github.com/regalk13)         
  - **Camden** | [**_GitHub_**](https://github.com/SoupySoups)    
  - **jkohhokj** | [**_GitHub_**](https://github.com/jkohhokj) 
- - **zdrc** | @TEMP
+ - **Alex** | [**_GitHub_**](https://github.com/zdrc) 
  - **Cameron** | [**_GitHub_**](https://github.com/n0remac)
  #### Designers 
  - **sybuns** | `No GitHub`
